@@ -68,7 +68,7 @@ function setWeatherInfo(hourlyArr, today) {
  * @param {string} city 
  */
 async function fetchCoordsAndCity(city) {
-    let response = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=e83bb5d054ff75fd497fd14eb14194c0`, { mode: 'cors' })
+    let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=e83bb5d054ff75fd497fd14eb14194c0`, { mode: 'cors' })
     let json = await response.json();
     return {
         lon: json.coord.lon,
