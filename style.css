@@ -29,6 +29,7 @@ html {
   margin: 0 1.5em;
   display: flex;
   font-size: xx-large;
+  cursor: pointer;
 }
 #search,
 input {
