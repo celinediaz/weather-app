@@ -82,15 +82,11 @@ async function fetchCoordsAndCity(city) {
  * @param {number} lon 
  * @param {number} lat 
  * @param {string} units 
- * @param {string} city 
- * @param {string} country 
  */
-async function fetchHourlyInfo(lon, lat, units, city, country) {
+async function fetchHourlyInfo(lon, lat, units) {
     let response = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=daily,minutely,alerts&units=${units}&appid=e83bb5d054ff75fd497fd14eb14194c0`, { mode: "cors" });
     let json = await response.json();
-    const today = dateByTimeZone(json.timezone);
-    setLocation(city, country);
-    setWeatherInfo(json.hourly, today);
+    return json;
 }
 /**
  * Fetches the location and uses it to fetch the weather's info.
@@ -98,7 +94,14 @@ async function fetchHourlyInfo(lon, lat, units, city, country) {
  */
 function loadWeather(city){
     fetchCoordsAndCity(city)
-    .then((json) => fetchHourlyInfo(json.lon, json.lat, unit, json.name, json.country))
+    .then((json) => {
+        setLocation(json.name, json.country);
+        return fetchHourlyInfo(json.lon, json.lat, unit)
+    })
+    .then((json) =>{
+        const today = dateByTimeZone(json.timezone);
+        setWeatherInfo(json.hourly, today);
+    })
     .catch(() => alert("incorrect city"));
 }
 
